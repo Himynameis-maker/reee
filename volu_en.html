@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Convert Video to Audio &amp; Adjust Volume Online – No Upload</title>
+<meta name="description" content="Raise or lower the volume of MP4, MP3, WAV and M4A files, and extract audio from video to save as MP3 or WAV. Nothing is uploaded: everything runs in your browser. Trim the start and end with a waveform. Free.">
+<link rel="canonical" href="https://volchange-local.com/volu_en.html">
+<link rel="alternate" hreflang="ja" href="https://volchange-local.com/volu_ja.html">
+<link rel="alternate" hreflang="en" href="https://volchange-local.com/volu_en.html">
+<link rel="alternate" hreflang="zh-CN" href="https://volchange-local.com/volu_zh.html">
+<link rel="alternate" hreflang="x-default" href="https://volchange-local.com/volu_ja.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Convert Video to Audio &amp; Adjust Volume Online – No Upload">
+<meta property="og:description" content="Raise or lower the volume of MP4, MP3, WAV and M4A files, and extract audio from video to save as MP3 or WAV. Nothing is uploaded: everything runs in your browser. Trim the start and end with a waveform. Free.">
+<meta property="og:url" content="https://volchange-local.com/volu_en.html">
+<meta property="og:locale" content="en_US">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="/favicon.png">
+<style>
+:root{
+  --bg:#eef2f1; --panel:#ffffff; --ink:#18262b; --sub:#5d6f75; --line:#d5dedd;
+  --accent:#0f7b6c; --accent-ink:#ffffff; --warn:#b4531a; --track:#cfdad8; --err:#c5221b;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#10191c; --panel:#192428; --ink:#e6f0ee; --sub:#93a8ad; --line:#2b3a3f; --accent:#3fc2ab; --accent-ink:#06211c; --warn:#f0a066; --track:#33454a; --err:#ff8a80;}
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic","PingFang SC","Microsoft YaHei",system-ui,-apple-system,sans-serif;
+  line-height:1.6; min-height:100vh;
+  padding:max(20px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(24px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));
+}
+main{max-width:560px;margin:0 auto}
+h1{font-size:1.5rem;margin:8px 0 4px;letter-spacing:.02em}
+.lead{color:var(--sub);font-size:.9rem;margin:0 0 20px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px}
+.drop{
+  position:relative;display:block;text-align:center;padding:30px 16px;border:2px dashed var(--line);border-radius:14px;
+  cursor:pointer;background:var(--panel);transition:border-color .15s, background .15s;
+}
+.drop.over,.drop:focus-visible{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,var(--panel))}
+.drop strong{display:block;font-size:1.05rem}
+.drop span{color:var(--sub);font-size:.85rem}
+.drop input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0}
+.drop:focus-within{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,var(--panel))}
+.drop.bad,.drop.bad:focus-within{border-color:var(--err)}
+.err{color:var(--err);font-weight:600;font-size:.9rem;margin:10px 0 0;overflow-wrap:anywhere}
+.fname{font-weight:600;word-break:break-all}
+.meta{color:var(--sub);font-size:.85rem}
+.vol-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px}
+.vol-num{font-size:3rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+.vol-num small{font-size:1.2rem;font-weight:600;margin-left:2px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:36px;background:transparent;margin:0;touch-action:pan-y}
+input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:4px;background:var(--track)}
+input[type=range]::-moz-range-track{height:8px;border-radius:4px;background:var(--track)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:var(--accent);border:3px solid var(--panel);box-shadow:0 0 0 1px var(--accent);margin-top:-10px}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--accent);border:3px solid var(--panel)}
+input[type=range]:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.ticks{position:relative;height:1.2em;color:var(--sub);font-size:.75rem}.ticks span{position:absolute;top:0;transform:translateX(-50%)}.ticks span:first-child{transform:none}.ticks span:last-child{transform:translateX(-100%)}
+.presets{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+button,select{font:inherit;color:inherit}
+.chip{border:1px solid var(--line);background:transparent;border-radius:999px;padding:6px 14px;min-height:36px;cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.btn{display:block;width:100%;min-height:52px;border:0;border-radius:12px;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:1rem;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn:focus-visible,.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.player{display:flex;align-items:center;gap:12px}
+.player .btn{flex:1}
+#wave{width:100%;height:120px;display:block;touch-action:none;border-radius:10px;background:color-mix(in srgb,var(--track) 25%,var(--panel))}
+.time{margin-top:6px;display:flex;justify-content:space-between;color:var(--sub);font-size:.8rem;font-variant-numeric:tabular-nums}
+.warn{color:var(--warn);font-size:.85rem;min-height:1.4em;margin:8px 0 0}
+.opts{display:flex;gap:10px;margin-bottom:12px}
+.opts label{flex:1;font-size:.8rem;color:var(--sub);display:block}
+select{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:0 10px;margin-top:2px}
+progress{width:100%;height:8px;margin-top:12px;accent-color:var(--accent)}
+a.btn{display:flex;align-items:center;justify-content:center;text-decoration:none;margin-top:12px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.top select{width:auto;min-height:36px;margin:0;padding:0 8px}
+.status{font-size:.85rem;color:var(--sub);margin:8px 0 0;min-height:1.4em}
+.share{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:8px;margin-top:10px;font-size:.75rem;color:var(--sub)}
+.share-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:transparent;border-radius:999px;padding:4px 12px;min-height:36px;font-size:.8rem;cursor:pointer}
+.share-btn:hover{border-color:var(--accent)}
+.share-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.share svg{width:14px;height:14px;flex:none}
+.note{font-size:.78rem;color:var(--sub);text-align:center;margin-top:18px}
+.legal{margin-top:16px;border:1px solid var(--line);border-radius:12px;background:var(--panel);font-size:.8rem;color:var(--sub)}
+.legal summary{cursor:pointer;padding:12px 14px;font-weight:600;min-height:44px;display:flex;align-items:center}
+.legal-body{padding:0 14px 14px;line-height:1.7}
+.legal-body h3{font-size:.85rem;color:var(--ink);margin:16px 0 4px}
+.legal-body p{margin:4px 0;overflow-wrap:anywhere}
+.legal-body ol{margin:4px 0;padding-left:1.4em}
+.legal-body li{margin:4px 0}
+[hidden]{display:none!important}
+.contact{font-size:.75rem;color:var(--sub);text-align:center;margin:18px 0 0}
+.contact a{color:inherit}
+.guide{font-size:.85rem;line-height:1.8;margin-top:16px}
+.guide h2{font-size:1.05rem;margin:0 0 8px}
+.guide h3{font-size:.95rem;margin:20px 0 6px}
+.guide h4{font-size:.85rem;margin:14px 0 2px}
+.guide p{margin:4px 0;overflow-wrap:anywhere}
+.guide ol,.guide ul{margin:4px 0;padding-left:1.4em}
+.guide li{margin:4px 0}
+.drop.locked,.drop.locked:focus-within{opacity:.5;cursor:not-allowed}
+.drop.locked input{cursor:not-allowed}
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6610225668788576"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="top"><h1 data-i18n="title">Volume Adjuster</h1><select id="lang" aria-label="Language" autocomplete="off"><option value="volu_ja.html">日本語</option><option value="volu_en.html" selected>English</option><option value="volu_zh.html">中文（简体）</option></select></div>
+  <p class="lead" data-i18n="lead">Load an MP3, WAV, M4A, or MP4 file up to 35 minutes long (only the audio is used from video), adjust its volume, and trim the start and end while viewing the waveform. Save as MP3 or WAV. Your file is processed only in this browser and is never uploaded. If you hear no sound, try turning off silent mode.</p>
+
+  <label class="drop" id="drop" for="file">
+    <input type="file" id="file" accept=".mp3,.wav,.m4a,.mp4,audio/mpeg,audio/wav,audio/x-wav,audio/mp4,audio/x-m4a,video/mp4">
+    <strong id="dropTitle">Choose an audio file</strong>
+    <span data-i18n="dropSub">Tap to choose, or drag and drop here (up to 35 min)</span>
+  </label>
+  <p class="err" id="err" role="alert" hidden></p>
+
+  <div id="app" hidden>
+    <section class="panel" style="margin-top:14px">
+      <div class="fname" id="fname"></div>
+      <div class="meta" id="fmeta"></div>
+    </section>
+
+    <section class="panel">
+      <canvas id="wave" data-i18n-aria="waveAria"></canvas>
+      <div class="time"><span id="tStart">0:00.0</span><span id="tMid">0:00.0 / 0:00.0</span><span id="tEnd">0:00.0</span></div>
+      <p class="meta" style="margin:6px 0 12px" data-i18n="hint">Drag the two handles on the waveform to choose the part to keep. Tap the waveform or drag the white playhead bar to move it.</p>
+      <div class="player">
+        <button class="btn" id="play">Play</button>
+        <button class="btn ghost" id="reset" data-i18n="reset">Reset range</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="vol-row">
+        <div class="vol-num"><span id="volNum">100</span><small>%</small></div>
+        <div class="meta" id="dbNum">0.0 dB</div>
+      </div>
+      <input type="range" id="vol" min="0" max="398" step="1" value="100" data-i18n-aria="volAria">
+      <div class="ticks"><span style="left:0">0%</span><span style="left:25.13%">100%</span><span style="left:50.25%">200%</span><span style="left:75.38%">300%</span><span style="left:100%">+12 dB</span></div>
+      <div class="presets">
+        <button class="chip" data-v="50">50%</button>
+        <button class="chip" data-v="100">100%</button>
+        <button class="chip" data-v="200">200%</button>
+        <button class="chip" data-v="300">300%</button>
+        <button class="chip" data-v="398">+12 dB</button>
+      </div>
+      <p class="warn" id="warn"></p>
+    </section>
+
+    <section class="panel">
+      <div class="opts">
+        <label><span data-i18n="fmtLabel">Save as</span>
+          <select id="fmt"><option value="mp3">MP3</option><option value="wav" data-i18n="optWav">WAV (lossless)</option></select>
+        </label>
+        <label id="brWrap"><span data-i18n="brLabel">MP3 bitrate (kbps)</span>
+          <select id="br"><option>128</option><option selected>192</option><option>256</option><option>320</option></select>
+        </label>
+      </div>
+      <button class="btn" id="dl" data-i18n="dl">Apply volume and save</button>
+      <progress id="prog" max="100" value="0" hidden></progress>
+      <p class="status" id="status" role="status"></p>
+      <div class="share" id="shareBox" hidden><span data-i18n="shareHint">Couldn't save? Use this</span><button type="button" class="share-btn" id="share"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg><span data-i18n="share">Share</span></button></div>
+    </section>
+  </div>
+
+  <p class="note" data-i18n="note">Nothing is uploaded to a server. Only process audio you have the right to use.</p>
+  <details class="legal" id="legal">
+    <summary data-i18n="f_sum">Credits, Terms of Use, Privacy &amp; Copyright Notice</summary>
+    <div class="legal-body">
+      <h3 data-i18n="f_h1">Credits</h3>
+      <p data-i18n="f_p1a">MP3 export uses the JavaScript MP3 encoder “lamejs” 1.2.1 (derived from LAME, LGPL license), loaded from cdnjs (cdnjs.cloudflare.com).</p>
+      <p data-i18n="f_p1b">Decoding, playback, and waveform drawing rely on the browser’s built-in Web Audio API and Canvas. WAV export and the volume and trim processing are done by this page’s own code.</p>
+      <p data-i18n="f_p1c">Names and trademarks of third-party libraries belong to their respective owners.</p>
+      <h3 data-i18n="f_h2">Uploads &amp; Privacy</h3>
+      <p data-i18n="f_p2a">The audio file you load is processed only inside your browser on your own device. It is never uploaded to a server, and this site does not store, collect, or view your audio data.</p>
+      <p data-i18n="f_p2b">The converted file is also generated on your device and downloaded directly to it. Loaded data is discarded when you close or reload the page.</p>
+      <p data-i18n="f_p2c">This tool does not save settings or history in your browser (except cookies related to advertising; see “Advertising” below). No personally identifying information is collected.</p>
+      <h3 data-i18n="f_h3">Notice on Copyrighted Material</h3>
+      <p data-i18n="f_p3a">Music, broadcasts, films, games, streamed content, and other audio are protected by copyright and other rights. Only process audio that you own, that you have permission from the rights holder to modify and use, or that the law allows you to use.</p>
+      <p data-i18n="f_p3b">Publishing, distributing, selling, or uploading processed audio (including to video sites or social media) may require permission from the rights holder of the original. This tool must not be used to circumvent copy-protection technology such as DRM.</p>
+      <p data-i18n="f_p3c">Users are solely responsible for any infringement, and this site accepts no liability for it.</p>
+      <h3 data-i18n="f_h4">Terms of Use</h3>
+      <ol>
+        <li data-i18n="f_t0">This service (the “Tool”) is provided free of charge. By using the Tool, you are deemed to have agreed to these terms.</li>
+        <li data-i18n="f_t1">You may not use the Tool for unlawful purposes or in ways that infringe the rights of third parties (copyright, publicity, privacy, etc.).</li>
+        <li data-i18n="f_t2">Do not place excessive load on the Tool or its servers, attempt unauthorized access, or reverse engineer the Tool.</li>
+        <li data-i18n="f_t3">The Tool is provided “as is”, with no warranty of accuracy, completeness, fitness for a particular purpose, or continued availability. We are not responsible for audio quality of results, problems caused by your device or playback environment, or data loss.</li>
+        <li data-i18n="f_t4">Raising the volume too much may cause clipping and can strain equipment or hearing. Lower your device volume before playback and use the Tool at your own risk.</li>
+        <li data-i18n="f_t5">To the extent permitted by law, this site is not liable for any damages arising from use of the Tool.</li>
+        <li data-i18n="f_t6">The Tool’s content, specifications, and these terms may be changed, suspended, or ended without notice. Continued use after a change means you accept the revised terms.</li>
+      </ol>
+      <h3 data-i18n="f_h5">Advertising</h3>
+      <p data-i18n="f_p5a">This site may display ads served by third-party vendors such as Google. Third-party vendors may use cookies to serve ads based on your previous visits.</p>
+      <p data-i18n="f_p5b">You can opt out of Google’s use of advertising cookies in Google Ads Settings (https://adssettings.google.com). For details, see Google’s “Policies &amp; Terms” (https://policies.google.com/technologies/ads).</p>
+    </div>
+  </details>
+  <section class="panel guide" id="guide">
+    <h2>About this tool</h2>
+    <p>Volume Adjuster is a free tool that raises or lowers the volume of MP3, WAV, M4A and MP4 files right in your browser. You can also pull the audio out of a video (MP4) and save it, and trim unwanted parts from the start and end while looking at the waveform. Your file is never sent to a server: everything is processed on your own computer or phone.</p>
+
+    <h3>How to use it</h3>
+    <ol>
+      <li>Tap “Choose an audio file” (or drag and drop a file onto it) and load an MP3, WAV, M4A or MP4 file up to 35 minutes long.</li>
+      <li>Drag the two handles on the waveform to choose the part you want to keep. Leave them at the ends to keep everything. Press play to check the result.</li>
+      <li>Set the volume with the slider or with the 50%, 100%, 200%, 300% and +12 dB buttons. You can move it during playback to hear the difference.</li>
+      <li>Choose MP3 or WAV. For MP3 you can also pick a bitrate.</li>
+      <li>Press “Apply volume and save”. The converted file downloads to your device, named like “original-name_vol150.mp3” with the volume percentage you chose.</li>
+    </ol>
+
+    <h3>Main features</h3>
+    <ul>
+      <li>Adjust the volume from 0% (mute) to 398% (+12 dB). 100% is the original volume.</li>
+      <li>Extract only the audio from an MP4 video and save it as MP3 or WAV.</li>
+      <li>Trim the start and end while viewing the waveform.</li>
+      <li>Save as MP3 (128, 192, 256 or 320 kbps) or WAV (uncompressed).</li>
+      <li>Everything runs in your browser. No sign-up and no app to install.</li>
+    </ul>
+
+    <h3>Choosing a volume</h3>
+    <p>The volume is shown both as a percentage and in decibels (dB). 50% is about −6 dB, 200% is about +6 dB, 300% is about +9.5 dB and 398% is +12 dB. Quietly recorded audio often becomes easy to hear at 200–300%. However, if the original is already loud and you raise it too much, the peaks of the waveform are cut off at the limit and the sound distorts (clipping). A notice appears when parts of the audio may clip, so start with a smaller value and listen to the result.</p>
+
+    <h3>Frequently asked questions</h3>
+    <h4>Does the video image stay in the saved file?</h4>
+    <p>No. Only the audio is extracted from the MP4 and saved as an MP3 or WAV audio file. Editing or exporting video is not supported, and a video without an audio track cannot be loaded.</p>
+    <h4>Is my file uploaded?</h4>
+    <p>No. Loading, changing the volume and exporting all happen inside your browser. Only the MP3 encoder component (lamejs) is loaded from cdnjs when the page opens; your audio data is never sent there.</p>
+    <h4>Does saving reduce the quality?</h4>
+    <p>WAV is not compressed, so nothing is lost apart from the volume change and trimming (it is written as 16-bit). MP3 is re-compressed, so the sound changes slightly. If unsure, choose 192 kbps or higher; for the best quality choose 320 kbps or WAV. WAV files are larger: about 350 MB for 35 minutes of 44.1 kHz stereo.</p>
+    <h4>Why can’t my file be loaded?</h4>
+    <p>Supported files are MP3, WAV, M4A and MP4 up to 35 minutes. Files with copy protection (DRM), videos without audio and damaged files cannot be loaded. A very large file may also fail if your device runs out of memory; try splitting it into shorter parts.</p>
+    <h4>I hear no sound when I play.</h4>
+    <p>On an iPhone, the browser may be silent while the silent-mode switch is on. Turn silent mode off, and check that your device volume is up and that this tool’s volume is not set to 0%.</p>
+    <h4>Can I process someone else’s music or videos?</h4>
+    <p>Only use audio that you own, that you have the rights holder’s permission to use, or that the law allows you to use. For details, see “Credits, Terms of Use, Privacy &amp; Copyright Notice” above.</p>
+  </section>
+  <p class="contact">Contact: <a href="mailto:gptbotboy&#64;gmail.com">gptbotboy&#64;gmail.com</a></p>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.min.js"></script>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const AC = window.AudioContext || window.webkitAudioContext;
+  let ctx = null, gainNode = null, buf = null, src = null;
+  let playing = false, startedAt = 0, offset = 0, raf = 0, baseName = 'audio', peak = 0;
+  let ts = 0, te = 0, peaks = null, drag = null, resumeAfter = false;
+  const MIN = 0.1;
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const fmtTime = s => { const q = Math.round(Math.max(0, s) * 10); const m = Math.floor(q / 600), r = (q - m * 600) / 10; return m + ':' + (r < 10 ? '0' : '') + r.toFixed(1); };
+  const tick0 = () => new Promise(r => setTimeout(r, 0));
+
+  // ---- 表示文言（このページ専用。他言語は volu_xx.html 側に分離） ----
+  const I18N = {
+      title:"Volume Adjuster",
+      lead:"Load an MP3, WAV, M4A, or MP4 file up to 35 minutes long (only the audio is used from video), adjust its volume, and trim the start and end while viewing the waveform. Save as MP3 or WAV. Your file is processed only in this browser and is never uploaded. If you hear no sound, try turning off silent mode.",
+      choose:"Choose an audio file", loading:"Loading…", another:"Choose another file", dropSub:"Tap to choose, or drag and drop here (up to 35 min)",
+      waveAria:"Waveform. Drag the handles at both ends to choose the range", hint:"Drag the two handles on the waveform to choose the part to keep. Tap the waveform or drag the white playhead bar to move it.",
+      reset:"Reset range", play:"▶", pause:"❚❚", volAria:"Volume (percent)", fmtLabel:"Save as", optWav:"WAV (lossless)", brLabel:"MP3 bitrate (kbps)",
+      dl:"Apply volume and save", note:"Nothing is uploaded to a server. Only process audio you have the right to use.",
+      mute:"Mute", clip:"Some parts may be too loud and could clip (distort).", errRead:"Could not read this file. Check that it is MP3, WAV, M4A, or MP4 with audio, and not too large.",
+      mono:"Mono", stereo:"Stereo", converting:"Converting… keep this screen open.", fallbackWav:"The MP3 encoder could not be loaded, so the file will be saved as WAV.",
+      done:"Done. The file is saved to your device's downloads.", fail:"Conversion failed: {msg}",
+      shareHint:"Couldn't save? Use this", share:"Share", shareFail:"Couldn't open the share menu. Please try again.",
+      errType:"Unsupported file type. Please choose an MP3, WAV, M4A, or MP4 file.", errLong:"Files longer than 35 minutes can't be loaded (this file: {dur}). Please choose a file of 35 minutes or less.",
+      errNoAudio:"This file has no audio track. Please choose an MP4 with audio.",
+      f_sum:"Credits, Terms of Use, Privacy & Copyright Notice",
+      f_h1:"Credits",
+      f_p1a:"MP3 export uses the JavaScript MP3 encoder “lamejs” 1.2.1 (derived from LAME, LGPL license), loaded from cdnjs (cdnjs.cloudflare.com).",
+      f_p1b:"Decoding, playback, and waveform drawing rely on the browser’s built-in Web Audio API and Canvas. WAV export and the volume and trim processing are done by this page’s own code.",
+      f_p1c:"Names and trademarks of third-party libraries belong to their respective owners.",
+      f_h2:"Uploads & Privacy",
+      f_p2a:"The audio file you load is processed only inside your browser on your own device. It is never uploaded to a server, and this site does not store, collect, or view your audio data.",
+      f_p2b:"The converted file is also generated on your device and downloaded directly to it. Loaded data is discarded when you close or reload the page.",
+      f_p2c:"This tool does not save settings or history in your browser (except cookies related to advertising; see “Advertising” below). No personally identifying information is collected.",
+      f_h3:"Notice on Copyrighted Material",
+      f_p3a:"Music, broadcasts, films, games, streamed content, and other audio are protected by copyright and other rights. Only process audio that you own, that you have permission from the rights holder to modify and use, or that the law allows you to use.",
+      f_p3b:"Publishing, distributing, selling, or uploading processed audio (including to video sites or social media) may require permission from the rights holder of the original. This tool must not be used to circumvent copy-protection technology such as DRM.",
+      f_p3c:"Users are solely responsible for any infringement, and this site accepts no liability for it.",
+      f_h4:"Terms of Use",
+      f_t0:"This service (the “Tool”) is provided free of charge. By using the Tool, you are deemed to have agreed to these terms.",
+      f_t1:"You may not use the Tool for unlawful purposes or in ways that infringe the rights of third parties (copyright, publicity, privacy, etc.).",
+      f_t2:"Do not place excessive load on the Tool or its servers, attempt unauthorized access, or reverse engineer the Tool.",
+      f_t3:"The Tool is provided “as is”, with no warranty of accuracy, completeness, fitness for a particular purpose, or continued availability. We are not responsible for audio quality of results, problems caused by your device or playback environment, or data loss.",
+      f_t4:"Raising the volume too much may cause clipping and can strain equipment or hearing. Lower your device volume before playback and use the Tool at your own risk.",
+      f_t5:"To the extent permitted by law, this site is not liable for any damages arising from use of the Tool.",
+      f_t6:"The Tool’s content, specifications, and these terms may be changed, suspended, or ended without notice. Continued use after a change means you accept the revised terms.",
+      f_h5:"Advertising",
+      f_p5a:"This site may display ads served by third-party vendors such as Google. Third-party vendors may use cookies to serve ads based on your previous visits.",
+      f_p5b:"You can opt out of Google’s use of advertising cookies in Google Ads Settings (https://adssettings.google.com). For details, see Google’s “Policies & Terms” (https://policies.google.com/technologies/ads)."
+  };
+  let lastUrl = null, fileId = 0, dlDone = false, converting = false;
+  let lastFile = null, sharing = false;
+  let dropKey = 'choose', statusKey = null, statusVars = null, errKey = null, errVars = null, settledDrop = 'choose', loadSeq = 0;
+  const t = (k, v) => String(I18N[k] || k).replace(/\{(\w+)\}/g, (m, n) => (v && v[n] != null) ? v[n] : m);
+  function setDrop(k){ dropKey = k; if (k !== 'loading') settledDrop = k; $('dropTitle').textContent = t(k); }
+  function setStatus(k, v){ statusKey = k; statusVars = v || null; $('status').textContent = k ? t(k, v) : ''; }
+  // 保存（変換）中だけ、ファイル選択を受け付けない。必ず finally で解除する。
+  function setLock(on){
+    converting = on;
+    const d = $('drop'), fi = $('file');
+    d.classList.toggle('locked', on);
+    d.setAttribute('aria-disabled', on ? 'true' : 'false');
+    if (fi) fi.disabled = on;
+  }
+  const MAX_SEC = 35 * 60;
+  const tooLong = d => d > MAX_SEC + 1;
+  const OK_EXT = ['mp3','wav','m4a','mp4'];
+  const OK_MIME = ['audio/mpeg','audio/mp3','audio/wav','audio/x-wav','audio/wave','audio/vnd.wave','audio/mp4','audio/x-m4a','audio/m4a','video/mp4'];
+  const fmtDur = s => { const m = Math.floor(s / 60), r = Math.floor(s % 60); return m + ':' + String(r).padStart(2, '0'); };
+  function isSupported(f){
+    const m = /\.([^.]+)$/.exec(f.name || '');
+    if (m) return OK_EXT.includes(m[1].toLowerCase());
+    return OK_MIME.includes((f.type || '').toLowerCase());
+  }
+  // ---- 中身（ファイルの先頭付近）による形式判定 ----
+  // 拡張子だけだと、名前だけ .mp4 の MOV や、中身が画像・OGG・FLAC などの .mp3 が通ってしまい、
+  // ファイル全体を読み込んでデコードに失敗するまで（大きいほど遅く）弾けない。
+  // そこで読み込み・デコードの前に、先頭付近（MP4は箱構造）だけを少量読んで判定する。
+  const u32 = (b, o) => ((b[o] << 24) | (b[o+1] << 16) | (b[o+2] << 8) | b[o+3]) >>> 0;
+  const tag4 = (b, o) => String.fromCharCode(b[o], b[o+1], b[o+2], b[o+3]);
+  const slice = async (f, from, to) => new Uint8Array(await f.slice(from, Math.min(to, f.size)).arrayBuffer());
+  // MP4系だが非対応のもの（MOV=qt、HEIC/AVIF などの画像）
+  const NOT_MP4_BRAND = ['qt  ','heic','heix','hevc','hevx','heim','heis','hevm','hevs','mif1','msf1','avif','avis','crx '];
+  // ftyp なしで始まる旧式 QuickTime(MOV)
+  const QT_ATOMS = ['moov','mdat','wide','free','skip','pnot'];
+  const MP3_BR = {
+    11:[32,64,96,128,160,192,224,256,288,320,352,384,416,448], 12:[32,48,56,64,80,96,112,128,160,192,224,256,320,384],
+    13:[32,40,48,56,64,80,96,112,128,160,192,224,256,320],
+    21:[32,48,56,64,80,96,112,128,144,160,176,192,224,256],   22:[8,16,24,32,40,48,56,64,80,96,112,128,144,160]
+  };
+  const MP3_SR = [44100, 48000, 32000];
+  // MPEG音声のフレームヘッダを検証し、フレーム長(バイト)を返す。不正なら 0
+  function mpegFrameLen(b, o){
+    if (o + 4 > b.length || b[o] !== 0xFF || (b[o+1] & 0xE0) !== 0xE0) return 0;
+    const ver = (b[o+1] >> 3) & 3, lay = (b[o+1] >> 1) & 3, bi = b[o+2] >> 4, si = (b[o+2] >> 2) & 3, pad = (b[o+2] >> 1) & 1;
+    if (ver === 1 || lay === 0 || bi === 0 || bi === 15 || si === 3) return 0;   // 予約値・フリーフォーマットは不正扱い
+    const v = ver === 3 ? 1 : 2, L = 4 - lay;
+    const br = MP3_BR[v === 1 ? 10 + L : (L === 1 ? 21 : 22)][bi - 1] * 1000, sr = MP3_SR[si] / (ver === 3 ? 1 : ver === 2 ? 2 : 4);
+    if (L === 1) return (Math.floor(12 * br / sr) + pad) * 4;
+    return Math.floor((L === 3 && v === 2 ? 72 : 144) * br / sr) + pad;
+  }
+  // 偶然の一致を避けるため、フレームが3つ連続してつながることを確認する（w: 先頭付近のバイト列）
+  function looksMp3(w){
+    const lim = Math.min(w.length - 4, 65536);
+    for (let p = 0; p <= lim; p++){
+      let q = p, k = 0;
+      while (k < 3){ const n = mpegFrameLen(w, q); if (!n) break; q += n; k++; }
+      if (k === 3) return true;
+    }
+    return false;
+  }
+  // MP4の箱(box)をたどり、音声トラック(hdlr=soun)の有無と、その長さ(秒)を調べる
+  async function mp4Audio(f){
+    const kids = async (from, to) => {
+      const list = [];
+      for (let o = from, n = 0; o + 8 <= to && n < 2000; n++){
+        const h = await slice(f, o, o + 16);
+        if (h.length < 8) break;
+        let len = u32(h, 0), hd = 8;
+        if (len === 1 && h.length >= 16){ len = u32(h, 8) * 4294967296 + u32(h, 12); hd = 16; }
+        else if (len === 0) len = to - o;
+        if (len < hd) break;
+        list.push({ type: tag4(h, 4), s: o + hd, e: Math.min(o + len, to) });
+        o += len;
+      }
+      return list;
+    };
+    const moov = (await kids(0, f.size)).find(x => x.type === 'moov');
+    if (!moov) return { tracks: 0, audio: null };
+    let tracks = 0;
+    for (const tk of (await kids(moov.s, moov.e)).filter(x => x.type === 'trak')){
+      const mdia = (await kids(tk.s, tk.e)).find(x => x.type === 'mdia');
+      if (!mdia) continue;
+      tracks++;
+      const m = await kids(mdia.s, mdia.e), hd = m.find(x => x.type === 'hdlr'), md = m.find(x => x.type === 'mdhd');
+      if (!hd || tag4(await slice(f, hd.s + 8, hd.s + 12), 0) !== 'soun') continue;
+      let dur = null;
+      if (md){
+        const b = await slice(f, md.s, md.s + 32), v1 = b[0] === 1;
+        const ts = u32(b, v1 ? 20 : 12), d = v1 ? u32(b, 24) * 4294967296 + u32(b, 28) : u32(b, 16);
+        const unknown = v1 ? u32(b, 24) === 0xFFFFFFFF : d === 0xFFFFFFFF;   // 全bitが1は「長さ不明」
+        if (ts > 0 && d > 0 && !unknown) dur = d / ts;     // 分割MP4(fMP4)などで0・不明なら不明扱い（その場合は従来どおりメタデータで確認）
+      }
+      return { tracks, audio: { dur } };
+    }
+    return { tracks, audio: null };
+  }
+  // 戻り値: 非対応・読めない → { err: エラー文言のキー } ／ 対応 → { kind, dur }（durは秒、不明ならnull）
+  async function sniff(f){
+    if (!f.size) return { err: 'errRead' };
+    const h = await slice(f, 0, 131072);
+    if (tag4(h, 0) === 'RIFF' && tag4(h, 8) === 'WAVE') return { kind: 'wav', dur: null };
+    const t4 = tag4(h, 4);
+    if (t4 === 'ftyp'){                                    // MP4 / M4A / MOV など
+      if (NOT_MP4_BRAND.includes(tag4(h, 8))) return { err: 'errType' };
+      const r = await mp4Audio(f);
+      if (!r.tracks) return { err: 'errRead' };            // 構造が読めない（壊れている・途中で切れている）
+      if (!r.audio) return { err: 'errNoAudio' };          // 音声トラックなし
+      return { kind: 'mp4', dur: r.audio.dur };
+    }
+    if (QT_ATOMS.includes(t4)) return { err: 'errType' };
+    let start = 0;                                         // MP3：ID3タグがあれば、その後ろから探す
+    if (h[0] === 0x49 && h[1] === 0x44 && h[2] === 0x33){
+      start = 10 + (((h[6] & 127) << 21) | ((h[7] & 127) << 14) | ((h[8] & 127) << 7) | (h[9] & 127)) + ((h[5] & 16) ? 10 : 0);
+    }
+    const w = start ? await slice(f, start, start + 131072) : h;
+    return looksMp3(w) ? { kind: 'mp3', dur: null } : { err: 'errType' };
+  }
+  function setErr(k, v){
+    errKey = k; errVars = v || null;
+    const el = $('err');
+    el.textContent = k ? t(k, v) : '';
+    el.hidden = !k;
+    $('drop').classList.toggle('bad', !!k);
+  }
+  function probeDuration(f){
+    return new Promise(res => {
+      const isVideo = /^video\//.test(f.type || '') || /\.mp4$/i.test(f.name || '');
+      const el = document.createElement(isVideo ? 'video' : 'audio');
+      const url = URL.createObjectURL(f);
+      let done = false, tm = 0;
+      const fin = v => {
+        if (done) return; done = true; clearTimeout(tm);
+        try{ el.removeAttribute('src'); el.load(); }catch(e){}
+        URL.revokeObjectURL(url); res(v);
+      };
+      tm = setTimeout(() => fin(null), 4000);
+      el.preload = 'metadata';
+      el.onloadedmetadata = () => fin(isFinite(el.duration) && el.duration > 0 ? el.duration : null);
+      el.onerror = () => fin(null);
+      el.src = url;
+    });
+  }
+  function renderMeta(){
+    $('fmeta').textContent = `${fmtTime(buf.duration)} / ${buf.sampleRate} Hz / ${t(buf.numberOfChannels === 1 ? 'mono' : 'stereo')} / ${(fileSize/1048576).toFixed(1)} MB`;
+  }
+  let fileSize = 0;
+  function applyLang(){
+    document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => el.setAttribute('aria-label', t(el.dataset.i18nAria)));
+    $('play').textContent = t(playing ? 'pause' : 'play');
+    setDrop(dropKey); setStatus(statusKey, statusVars); setErr(errKey, errVars);
+    if (buf){ renderMeta(); updateVol(); }
+  }
+  function initLang(){
+    const sel = $('lang');
+    const SELF = sel.querySelector('option[selected]').value;
+    applyLang();
+    sel.value = SELF;
+    sel.addEventListener('change', () => { if (sel.value !== SELF) location.href = sel.value; });
+    window.addEventListener('pageshow', () => { sel.value = SELF; });
+  }
+
+  function ensureCtx(){
+    if (!ctx){ ctx = new AC(); gainNode = ctx.createGain(); gainNode.connect(ctx.destination); }
+    if (ctx.state === 'suspended') ctx.resume();
+  }
+  const decode = ab => new Promise((res, rej) => ctx.decodeAudioData(ab, res, rej));
+  const gainVal = () => $('vol').value / 100;
+
+  function analyze(){
+    const bins = 800, n = buf.length, per = n / bins, out = new Float32Array(bins);
+    peak = 0;
+    for (let c = 0; c < buf.numberOfChannels; c++){
+      const d = buf.getChannelData(c);
+      for (let b = 0; b < bins; b++){
+        const a = b * per | 0, e = Math.min(n, (b + 1) * per | 0), st = Math.max(1, (e - a) / 64 | 0);
+        let m = out[b];
+        for (let i = a; i < e; i += st){ const v = Math.abs(d[i]); if (v > m) m = v; }
+        out[b] = m;
+      }
+    }
+    for (const v of out) if (v > peak) peak = v;
+    peaks = out.map(v => peak ? v / peak : 0);
+  }
+
+  function clearResult(){
+    if (lastUrl){ URL.revokeObjectURL(lastUrl); lastUrl = null; }
+    lastFile = null; $('shareBox').hidden = true;
+    if (statusKey === 'done' || statusKey === 'fail' || statusKey === 'fallbackWav' || statusKey === 'shareFail') setStatus(null);
+  }
+  // 保存が成功した時だけ、そのファイルを共有できるようにする（共有非対応の端末では出さない）
+  function offerShare(blob, name){
+    lastFile = null; $('shareBox').hidden = true;
+    try{
+      const f = new File([blob], name, {type: blob.type});
+      if (navigator.share && navigator.canShare && navigator.canShare({files: [f]})){ lastFile = f; $('shareBox').hidden = false; }
+    }catch(e){}
+  }
+  async function shareResult(){
+    if (!lastFile || sharing) return;
+    sharing = true;
+    try{ await navigator.share({files: [lastFile]}); }
+    catch(e){ if (!e || e.name !== 'AbortError') setStatus('shareFail'); }
+    finally{ sharing = false; }
+  }
+  let selSeq = 0;
+  async function loadFile(f){
+    if (!f || converting) return;    // 保存の変換中は新しいファイルを受け付けない
+    const sel = ++selSeq;
+    setErr(null);
+    // 1) 対応形式かどうか（ドラッグ＆ドロップは accept を通らないのでここで必ず確認）
+    //    拡張子 → 中身 の順に、ファイル全体の読み込み・デコードより前に確認する
+    //    非対応なら、読み込み中の別ファイルには影響させずエラーだけ出す
+    if (!isSupported(f)){
+      setErr('errType'); return;
+    }
+    let sn;
+    try{ sn = await sniff(f); }catch(e){ sn = { dur: null }; }   // 判定自体が失敗しても、正常なファイルを弾かず従来の読み込みに任せる
+    if (sel !== selSeq) return;      // 判定中に別のファイルが選ばれたら捨てる
+    if (sn.err){ setErr(sn.err); return; }
+    const seq = ++loadSeq;           // 新しい選択が来たら、古い読み込みの結果は捨てる
+    setDrop('loading');
+    const fail = (k, v) => { if (seq !== loadSeq) return; setDrop(settledDrop); setErr(k, v); };
+    let nb;
+    try{
+      // 2) 先にメタデータで長さを確認（長すぎるファイルは全体をデコードしない）
+      const pd = sn.dur != null ? sn.dur : await probeDuration(f);   // MP4は構造から取れた音声の長さを優先
+      if (seq !== loadSeq) return;
+      if (pd != null && tooLong(pd)){ fail('errLong', {dur: fmtDur(pd)}); return; }
+      ensureCtx();
+      nb = await decode(await f.arrayBuffer());
+    }catch(e){
+      fail('errRead'); return;
+    }
+    if (seq !== loadSeq) return;
+    // 3) デコード後の正確な長さで最終確認
+    if (tooLong(nb.duration)){ fail('errLong', {dur: fmtDur(nb.duration)}); return; }
+    setErr(null);
+    // 検証OK：ここで初めて現在の状態を切り替える（失敗時は以前のファイルがそのまま残る）
+    stop(true); setStatus(null);
+    fileId++;
+    clearResult(); $('prog').hidden = true;
+    buf = nb;
+    setDrop('another');
+    baseName = f.name.replace(/\.[^.]+$/, '');
+    analyze();
+    ts = 0; te = buf.duration; offset = 0;
+    $('fname').textContent = f.name;
+    fileSize = f.size; renderMeta();
+    $('vol').value = 100; updateVol();
+    $('app').hidden = false;
+    refresh();
+  }
+
+  function updateVol(){
+    const v = gainVal();
+    $('volNum').textContent = $('vol').value;
+    $('dbNum').textContent = v === 0 ? t('mute') : (20*Math.log10(v)).toFixed(1) + ' dB';
+    if (gainNode) gainNode.gain.value = v;
+    $('warn').textContent = (buf && peak * v > 1) ? t('clip') : '';
+  }
+
+  // ---- 波形・トリム ----
+  function pos(){ return playing ? Math.min(te, ctx.currentTime - startedAt) : offset; }
+  function refresh(){
+    if (!buf) return;
+    $('tStart').textContent = fmtTime(ts);
+    $('tEnd').textContent = fmtTime(te);
+    $('tMid').textContent = `${fmtTime(pos() - ts)} / ${fmtTime(te - ts)}`;
+    drawWave();
+  }
+  function drawWave(){
+    const cv = $('wave'), dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+    if (!W || !peaks) return;
+    if (cv.width !== Math.round(W*dpr)){ cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr); }
+    const g = cv.getContext('2d'), css = getComputedStyle(document.documentElement);
+    const accent = css.getPropertyValue('--accent'), track = css.getPropertyValue('--track'), ink = css.getPropertyValue('--ink'), panel = css.getPropertyValue('--panel');
+    g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
+    const x = t => t / buf.duration * W, xs = x(ts), xe = x(te), n = peaks.length, bw = Math.max(1, W / n - 0.5);
+    for (let i = 0; i < n; i++){
+      const px = i / n * W, h = Math.max(2, peaks[i] * (H - 10));
+      g.fillStyle = (px >= xs - 1 && px <= xe) ? accent : track;
+      g.fillRect(px, (H - h) / 2, bw, h);
+    }
+    g.fillStyle = accent; g.fillRect(xs - 2, 0, 4, H); g.fillRect(xe - 2, 0, 4, H);
+    [xs, xe].forEach(px => {
+      g.beginPath(); g.arc(px, H / 2, 12, 0, Math.PI * 2);
+      g.fillStyle = accent; g.fill(); g.lineWidth = 3; g.strokeStyle = panel; g.stroke();
+    });
+    const hx = x(pos());
+    g.fillStyle = ink; g.fillRect(hx - 1.5, 0, 3, H);
+  }
+  const posX = e => { const r = $('wave').getBoundingClientRect(); return { px: e.clientX - r.left, W: r.width }; };
+
+  $('wave').addEventListener('pointerdown', e => {
+    if (!buf) return;
+    const { px, W } = posX(e), xs = ts / buf.duration * W, xe = te / buf.duration * W;
+    const ds = Math.abs(px - xs), de = Math.abs(px - xe);
+    const dp = Math.abs(px - pos() / buf.duration * W);
+    if (dp <= 20 && dp <= Math.min(ds, de)){
+      drag = 'p'; resumeAfter = playing; pause();
+      $('wave').setPointerCapture(e.pointerId); e.preventDefault(); return;
+    }
+    if (Math.min(ds, de) > 28){
+      drag = 'p'; resumeAfter = playing; pause();
+      offset = clamp(px / W * buf.duration, ts, te); refresh();
+      $('wave').setPointerCapture(e.pointerId); e.preventDefault(); return;
+    }
+    drag = ds < de ? 's' : de < ds ? 'e' : (px < xs ? 's' : 'e');
+    pause();
+    $('wave').setPointerCapture(e.pointerId); e.preventDefault();
+  });
+  $('wave').addEventListener('pointermove', e => {
+    if (!drag) return;
+    const { px, W } = posX(e), t = clamp(px / W, 0, 1) * buf.duration;
+    if (drag === 'p'){ offset = clamp(t, ts, te); refresh(); return; }
+    if (drag === 's') ts = Math.min(t, te - MIN); else te = Math.max(t, ts + MIN);
+    offset = clamp(offset, ts, te);
+    clearResult();
+    refresh();
+  });
+  const endDrag = () => { const was = drag === 'p' && resumeAfter; drag = null; resumeAfter = false; if (was) play(); };
+  $('wave').addEventListener('pointerup', endDrag);
+  $('wave').addEventListener('pointercancel', endDrag);
+  window.addEventListener('resize', drawWave);
+  $('reset').addEventListener('click', () => { if (!buf) return; pause(); ts = 0; te = buf.duration; offset = 0; clearResult(); refresh(); });
+
+  function seekTo(t){
+    const was = playing;
+    if (was){ halt(); playing = false; }
+    offset = clamp(t, ts, te);
+    if (was) play(); else refresh();
+  }
+
+  // ---- 再生 ----
+  function tick(){
+    refresh();
+    if (playing && pos() >= te - 0.03){ stop(true); return; }
+    raf = requestAnimationFrame(tick);
+  }
+  function play(){
+    if (!buf) return;
+    ensureCtx();
+    gainNode.gain.value = gainVal();
+    if (offset < ts || offset >= te - 0.05) offset = ts;
+    src = ctx.createBufferSource(); src.buffer = buf; src.connect(gainNode);
+    src.start(0, offset, te - offset);
+    startedAt = ctx.currentTime - offset; playing = true;
+    $('play').textContent = t('pause');
+    cancelAnimationFrame(raf); raf = requestAnimationFrame(tick);
+  }
+  function halt(){
+    if (src){ try{ src.onended = null; src.stop(); }catch(e){} src.disconnect(); src = null; }
+  }
+  function pause(){
+    if (!playing) return;
+    offset = pos(); halt(); playing = false;
+    $('play').textContent = t('play'); cancelAnimationFrame(raf); refresh();
+  }
+  function stop(reset){
+    halt(); playing = false; cancelAnimationFrame(raf);
+    if (reset) offset = ts;
+    $('play').textContent = t('play'); refresh();
+  }
+
+  // ---- 書き出し ----
+  // メモリ節約：全区間のInt16配列を作らず、小さなかたまりごとに変換してすぐ捨てる
+  function getRange(){
+    const ch = Math.min(2, buf.numberOfChannels), chans = [];
+    for (let c = 0; c < ch; c++) chans.push(buf.getChannelData(c));
+    return { ch, chans, g: gainVal(), i0: Math.floor(ts * buf.sampleRate), i1: Math.min(buf.length, Math.ceil(te * buf.sampleRate)) };
+  }
+  function toInt16(s, a, b, g){
+    const d = new Int16Array(b - a);
+    for (let i = a; i < b; i++){
+      let v = s[i] * g; v = v > 1 ? 1 : v < -1 ? -1 : v;
+      d[i - a] = v < 0 ? v * 32768 : v * 32767;
+    }
+    return d;
+  }
+  const WAV_CHUNK = 1 << 18;
+  async function encodeWav(r, rate, onProg){
+    const { ch, chans, g, i0, i1 } = r, n = i1 - i0, bytes = n * ch * 2;
+    const hd = new ArrayBuffer(44), dv = new DataView(hd);
+    const w = (o, s) => { for (let i = 0; i < s.length; i++) dv.setUint8(o+i, s.charCodeAt(i)); };
+    w(0,'RIFF'); dv.setUint32(4, 36 + bytes, true); w(8,'WAVE'); w(12,'fmt ');
+    dv.setUint32(16,16,true); dv.setUint16(20,1,true); dv.setUint16(22,ch,true);
+    dv.setUint32(24,rate,true); dv.setUint32(28,rate*ch*2,true); dv.setUint16(32,ch*2,true); dv.setUint16(34,16,true);
+    w(36,'data'); dv.setUint32(40,bytes,true);
+    const parts = [hd];
+    for (let a = i0; a < i1; a += WAV_CHUNK){
+      const b = Math.min(i1, a + WAV_CHUNK), len = b - a, cs = chans.map(s => toInt16(s, a, b, g));
+      const ab = new ArrayBuffer(len * ch * 2), v = new DataView(ab);
+      let o = 0;
+      for (let i = 0; i < len; i++) for (let c = 0; c < ch; c++){ v.setInt16(o, cs[c][i], true); o += 2; }
+      parts.push(ab);
+      onProg((a - i0) / n); await tick0();
+    }
+    return new Blob(parts, {type:'audio/wav'});
+  }
+  async function encodeMp3(r, rate, kbps, onProg){
+    const { ch, chans, g, i0, i1 } = r;
+    const enc = new lamejs.Mp3Encoder(ch, rate, kbps);
+    const parts = [], N = i1 - i0, STEP = 1152 * 40;
+    for (let i = i0; i < i1; i += STEP){
+      const e = Math.min(i1, i + STEP), l = toInt16(chans[0], i, e, g), rr = ch > 1 ? toInt16(chans[1], i, e, g) : undefined;
+      const b = rr ? enc.encodeBuffer(l, rr) : enc.encodeBuffer(l);
+      if (b.length) parts.push(new Int8Array(b));
+      onProg((i - i0) / N); await tick0();
+    }
+    const f = enc.flush(); if (f.length) parts.push(new Int8Array(f));
+    return new Blob(parts, {type:'audio/mpeg'});
+  }
+
+  async function save(){
+    if (!buf || converting) return;
+    pause();
+    const id = fileId;
+    const fmt = $('fmt').value, btn = $('dl'), prog = $('prog'), st = $('status');
+    clearResult();
+    btn.disabled = true; prog.hidden = false; prog.value = 0;
+    setStatus('converting');
+    setLock(true);
+    try{
+      await tick0();
+      let ext = fmt;
+      if (fmt === 'mp3' && typeof lamejs === 'undefined'){ ext = 'wav'; setStatus('fallbackWav'); }
+      const r = getRange(), onProg = p => { prog.value = p * 100; };
+      const blob = ext === 'wav'
+        ? await encodeWav(r, buf.sampleRate, onProg)
+        : await encodeMp3(r, buf.sampleRate, +$('br').value, onProg);
+      if (id !== fileId) return;
+      if (lastUrl) URL.revokeObjectURL(lastUrl);
+      lastUrl = URL.createObjectURL(blob);
+      const name = `${baseName}_vol${$('vol').value}.${ext}`;
+      const a = document.createElement('a');
+      a.href = lastUrl; a.download = name; a.style.display = 'none';
+      document.body.appendChild(a); a.click(); a.remove();
+      prog.value = 100;
+      dlDone = true;
+      offerShare(blob, name);
+      setStatus('done');
+    }catch(e){
+      console.error(e);
+      setStatus('fail', {msg: String((e && e.message) || e)});
+    }finally{
+      setLock(false);
+      btn.disabled = false; setTimeout(() => { prog.hidden = true; }, 800);
+    }
+  }
+
+  // ---- イベント ----
+  const drop = $('drop');
+  ['dragenter','dragover'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave','drop'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.remove('over'); }));
+  drop.addEventListener('drop', e => loadFile(e.dataTransfer.files[0]));
+  window.addEventListener('dragover', e => e.preventDefault());
+  window.addEventListener('drop', e => e.preventDefault());
+  $('vol').addEventListener('input', () => { updateVol(); clearResult(); });
+  document.querySelectorAll('.chip').forEach(b => b.addEventListener('click', () => { $('vol').value = b.dataset.v; updateVol(); clearResult(); }));
+  $('play').addEventListener('click', () => playing ? pause() : play());
+  $('fmt').addEventListener('change', () => { $('brWrap').hidden = $('fmt').value === 'wav'; clearResult(); });
+  $('br').addEventListener('change', clearResult);
+  $('dl').addEventListener('click', save);
+  $('share').addEventListener('click', shareResult);
+  // 同じファイルを再選択しても change が発火するよう、選択ダイアログを開く直前に値を空にする
+  // iOS Safari はダウンロード後に既存の file input が反応しなくなることがあるため、
+  // input を作り直して毎回まっさらな状態にする
+  function bindInput(){
+    const old = $('file');
+    const fi = old.cloneNode(false);
+    fi.value = '';
+    old.replaceWith(fi);
+    fi.addEventListener('click', () => { fi.value = ''; });
+    fi.addEventListener('change', e => { const f = e.target.files[0]; if (f) loadFile(f); });
+  }
+  bindInput();
+  // スマホ（iPhone/iPad/Android）ではダウンロード後にファイル選択ダイアログが開かなくなることがあるため、
+  // ダウンロード済みの状態でラベルをタップしたらページを読み込み直して状態をリセットする（PCは対象外）
+  const isMobile = /iP(hone|ad|od)|Android/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  drop.addEventListener('click', e => {
+    if (converting){ e.preventDefault(); e.stopPropagation(); return; }
+    if (dlDone && isMobile){ e.preventDefault(); e.stopPropagation(); location.reload(); }
+  }, true);
+  window.addEventListener('pageshow', bindInput);
+  initLang();
+})();
+</script>
+</body>
+</html>
